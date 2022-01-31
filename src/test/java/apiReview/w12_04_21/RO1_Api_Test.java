@@ -1,16 +1,17 @@
 package apiReview.w12_04_21;
 
-import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static io.restassured.RestAssured.given;
+
 public class RO1_Api_Test {
 
     //Baglantilari kuruyoruz.
     String hrUrl = "http://52.206.11.157:1000/ords/hr"; //dikkat bu benim sahsi apim(52.206.11.157)
-    String zipUrl = "http://api.zippopotam.us/US/";
+    String zipUrl = "http://api.zippopotam.us/";
     String Spartans = "http://52.206.11.157:8000";
 
 
@@ -19,7 +20,7 @@ public class RO1_Api_Test {
     public void testOne(){
         //Response body olusturmak icin hazir kodu yaziyoruz.
         //Yukarida emin ol restassured paketlerinin yuklendigine
-        Response response = RestAssured.given().accept(ContentType.JSON)
+        Response response = given().accept(ContentType.JSON)
                 .when().get(hrUrl+"/employees");
 
        response.prettyPrint(); // response body deki prety kismi
@@ -31,7 +32,7 @@ public class RO1_Api_Test {
     @Test //get me all regions from HR api
     public void testTwo(){
 
-        Response response = RestAssured.given().accept(ContentType.JSON)
+        Response response = given().accept(ContentType.JSON)
                 .when().get(hrUrl+"/regions");
 
         //response.prettyPrint();
@@ -52,5 +53,28 @@ public class RO1_Api_Test {
     }
 
 
+    //Do a request to zip URL and get 45414, verify it contains Dayton, veerify status code and Contenttype
+    /**
+     * import static io.restassured.RestAssured.*; yukarida restAssured static import ettigim icin
+     * Asagida artik tekrardan  RestAssured.given() yazmama gerek kalmadan sadece given() ile baslayabilirim.
+     * */
+    @Test
+    public void testThree(){
+        Response response = given().accept(ContentType.JSON) //Static import
+                .when().get(zipUrl+"US/45414");
+        Assert.assertEquals(response.statusCode(),200);
+        Assert.assertEquals(response.contentType(),"application/json");
+        Assert.assertTrue(response.body().asString().contains("Dayton"));
+        response.prettyPrint();
+    }
+
+    @Test
+    public void fourth(){
+        //chaining object yontemi ile yani lazy way ile responsa assigned etmeden de yapacagiz
+
+        given().accept(ContentType.JSON)
+                .when().get(zipUrl+"US/45414")
+                .then().assertThat().contentType("application/json").and().statusCode(200);
+    }
 
 }
