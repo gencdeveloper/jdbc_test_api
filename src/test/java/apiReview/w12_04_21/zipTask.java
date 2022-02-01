@@ -52,10 +52,23 @@ public class zipTask {
 
         //post code is 22031
         String postCode = jsonPath.getString("\'post-code\'");
-        Assert.assertEquals(postCode,22031);
+        //Assert.assertEquals(postCode,22031);
 
+        //country  is United States
+        Assert.assertEquals(jsonPath.getString("country"),"United States");
 
-        response.prettyPrint();
+        //country abbreviation is US
+        Assert.assertEquals(jsonPath.getString("\'country abbreviation\'"),"US");
+
+        //palce name is Fairfax
+        Assert.assertEquals(jsonPath.getString("places[0].\'place name\'"),"Fairfax");
+
+        //state is Virginia
+        Assert.assertEquals(jsonPath.getString("places[0].state"),"Virginia");
+
+        //latittude
+        Assert.assertEquals(jsonPath.getString("places[0].latitude"),"38.8604");
+
     }
 
 
