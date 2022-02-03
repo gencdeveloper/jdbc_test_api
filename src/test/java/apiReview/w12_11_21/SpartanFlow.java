@@ -4,6 +4,7 @@ import Day6_POJO.Spartan;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -13,9 +14,10 @@ public class SpartanFlow {
 
     String spartanUrl = "http://52.206.11.157:8000";
     Response mockSpartan; // I assinged as a global variable
+    int idFromPost;
 
     @BeforeClass
-    public void setUp(){
+    public void createSoartan(){
 
 
         //I want to send get request to my Mock API to receive a spartan object
@@ -27,6 +29,13 @@ public class SpartanFlow {
 
          System.out.println(mockSpartan.body().asString());
 
+    }
+
+    @AfterClass
+    public void deleteSpartan(){
+        given().pathParam("id",idFromPost)
+                .when().delete(spartanUrl+"/api/spartans/{id}").then().log().all()
+                .assertThat().statusCode(204);
     }
 
     @Test
@@ -47,9 +56,9 @@ public class SpartanFlow {
 
                 .when().post(spartanUrl+"/api/spartans");  //since I provided URI and Path as base parameter at Before Class
 
-      int idFromPost = postresponse.path("data.id");
+      idFromPost = postresponse.path("data.id");
 
-        System.out.println(idFromPost);
+        System.out.println("id" + idFromPost);
 
         Assert.assertEquals(postresponse.path("success"),"A Spartan is Born!"); //assertion yani post islemi tanimlandi mi
         //derdimiz onu anlamak!
