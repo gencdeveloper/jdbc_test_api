@@ -4,6 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
@@ -45,4 +46,38 @@ public class CollectionTest {
     }
 
 
+    /**
+     "places": [
+     *         {
+     *             "place name": "Beverly Hills",
+     *             "longitude": "-118.4065",
+     *             "state": "California",
+     *             "state abbreviation": "CA",
+     *             "latitude": "34.0901"
+     */
+
+            @Test
+            public void zipTestCollection(){
+
+                Response response = given().accept(ContentType.JSON)
+                        .and().pathParam("zipCode", 45414)
+                        .when().get(zipUrl+"US/{zipCode}");
+
+                assertEquals(response.statusCode(),200);
+
+                //to reach my response body and for assertions
+                Map<String,Object> pc45414 = response.body().as(Map.class); //deserialization
+
+                System.out.println(pc45414);
+
+                assertEquals(pc45414.get("country"),"United States");
+
+                //I am getting "places" key from my Map and putting the value in a List<Map>
+                // array a sahip olan places i mi adim adim test icin yaptim ARTIK PLACES icindeki tum elemenlere erisiyorum.
+                List<Map<String,Object>> placesFor45414 = (List<Map<String, Object>>) pc45414.get("places");
+
+                assertEquals(placesFor45414.get(0).get("state"),"Ohio");
+                assertEquals(placesFor45414.get(0).get("state abbreviation"),"OH");
+
+            }
 }
