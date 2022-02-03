@@ -29,4 +29,24 @@ public class PojoTest {
         assertEquals(spartan7.getName(),"Hershel");
     }
 
+    @Test
+    public void zipWithPojo(){
+
+        Response response = given().accept(ContentType.JSON)
+                .and().pathParam("zipCode", 45414)
+                .when().get(zipUrl+"US/{zipCode}");
+
+        assertEquals(response.statusCode(),200);
+
+        System.out.println("response.body().asString() = " + response.body().asString());
+
+        PostalCode pc45414 = response.body().as(PostalCode.class);
+
+    }
+
+
+
+
+
+
 }
