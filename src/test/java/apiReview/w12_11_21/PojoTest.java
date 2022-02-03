@@ -42,6 +42,10 @@ public class PojoTest {
 
         PostalCode pc45414 = response.body().as(PostalCode.class);
 
+        System.out.println("pc45414.getCountry() = " + pc45414.getCountry());
+
+        System.out.println("pc45414.getPlaces().get(0).getPlaceName() = " + pc45414.getPlaces().get(0).getPlaceName());
+
     }
 
 
