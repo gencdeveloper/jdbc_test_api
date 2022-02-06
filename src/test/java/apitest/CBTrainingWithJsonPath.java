@@ -54,8 +54,8 @@ public class CBTrainingWithJsonPath {
          *
          * //Get students contanct
          * String phone = jsonpath.getString("students.contact[0]");
-         *
-         *
+         * Github ogrenirken burayi kontrol ettim
+         *dsadsadsd
          *
          *
          * */

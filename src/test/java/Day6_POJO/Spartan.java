@@ -17,7 +17,7 @@ public class Spartan {
     private String gender;
     private long phone;
 
-    public Spartan(int id, String name, String gender, long phone) {
+    public Spartan(int id, String name, String gender, long phone) {//constructor
         this.id = id;
         this.name = name;
         this.gender = gender;
